@@ -1,0 +1,246 @@
+openapi: 3.0.3
+info:
+  title: Lista de usuários
+  description: Essa API provê o acesso aos usuários do sistema.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Michelly Nonato
+    email: smartnovo01@gmail.com
+    url: https://michellynonatto.github.io/Michelly-Nonatto/
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+
+servers:
+  - url: https://meusite.swagger.io/api/v1
+
+tags:
+  - name: Users
+    description: Cadastro dos usuários
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+
+paths:
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Lista dos Usuários
+      description: Este endpoint retorna **todos** os usuários cadastrados no sistema
+      operationId: getUsers
+      responses:
+        '200':
+          description: Uma lista (Array) de usuários
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid requisition
+        '422':
+          description: Validation exception
+    
+    post:
+      tags:
+        - Users
+      summary: Criar um Usuário
+      description: Este endpoint **cria** um novo usuário no sistema
+      operationId: postUsers
+      requestBody:
+        description: Usuário a ser criado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Usuário cadastrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid requisition
+        '422':
+          description: Validation exception
+
+  /users/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          description: ID do usuário
+          required: true
+          schema:
+            type: integer
+            format: int64
+      tags:
+        - Users
+      summary: Detalhe do Usuário
+      description: Este endpoint retorna **apenas o usuário especificado pelo ID**
+      operationId: getUserById
+      responses:
+        '200':
+          description: Detalhes do usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: User not found
+        '422':
+          description: Validation exception
+          
+    put:
+      tags:
+        - Users
+      summary: Atualizar um Usuário
+      description: Este endpoint **atualiza** um usuário do sistema. O ID do usuário deve ser informado.
+      operationId: putUsers
+      requestBody:
+        description: Usuário a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid requisition
+        '422':
+          description: Validation exception
+        '404':
+          description: User not existing
+    
+    patch:
+      tags:
+        - Users
+      summary: Atualizar um Usuário
+      description: Este endpoint **atualiza** um usuário do sistema. O ID do usuário deve ser informado.
+      operationId: patchUsers
+      requestBody:
+        description: Usuário a ser atualizado
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid requisition
+        '422':
+          description: Validation exception
+        '404':
+          description: User not existing
+          
+    delete:
+        tags:
+          - Users
+        summary: Deleta um Usuário
+        description: Este endpoint **deleta** um usuário do sistema. O ID do usuário deve ser informado.
+        operationId: deleteUserById
+        parameters:
+          - name: id
+            in: path
+            description: ID do usuário a ser deletado
+            required: true
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '200':
+            description: Usuário deletado com sucesso
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: Usuário deletado com sucesso
+              application/xml:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: Usuário deletado com sucesso
+          '400':
+            description: Invalid requisition
+          '404':
+            description: User not found
+          '422':
+            description: Validation exception
+
+
+components:
+  schemas:
+    User:
+      type: object
+      required: 
+        - username
+        - telephone
+        - email
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: George
+        telephone:
+          type: string
+          example: (11) 4002-8922
+        email: 
+          type: string
+          example: george@yahoo.com
